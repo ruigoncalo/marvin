@@ -37,19 +37,19 @@ public class Character {
 
     @SerializedName("comics")
     @Expose
-    private Comics comics;
+    private Collection comics;
 
     @SerializedName("series")
     @Expose
-    private Series series;
+    private Collection series;
 
     @SerializedName("stories")
     @Expose
-    private Stories stories;
+    private Collection stories;
 
     @SerializedName("events")
     @Expose
-    private Events events;
+    private Collection events;
 
     @SerializedName("urls")
     @Expose
@@ -79,19 +79,19 @@ public class Character {
         return resourceURI;
     }
 
-    public Comics getComics() {
+    public Collection getComics() {
         return comics;
     }
 
-    public Series getSeries() {
+    public Collection getSeries() {
         return series;
     }
 
-    public Stories getStories() {
+    public Collection getStories() {
         return stories;
     }
 
-    public Events getEvents() {
+    public Collection getEvents() {
         return events;
     }
 
@@ -123,19 +123,19 @@ public class Character {
         this.resourceURI = resourceURI;
     }
 
-    public void setComics(Comics comics) {
+    public void setComics(Collection comics) {
         this.comics = comics;
     }
 
-    public void setSeries(Series series) {
+    public void setSeries(Collection series) {
         this.series = series;
     }
 
-    public void setStories(Stories stories) {
+    public void setStories(Collection stories) {
         this.stories = stories;
     }
 
-    public void setEvents(Events events) {
+    public void setEvents(Collection events) {
         this.events = events;
     }
 

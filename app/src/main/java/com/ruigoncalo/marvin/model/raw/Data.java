@@ -13,37 +13,37 @@ public class Data {
 
     @SerializedName("offset")
     @Expose
-    private Integer offset;
+    private int offset;
 
     @SerializedName("limit")
     @Expose
-    private Integer limit;
+    private int limit;
 
     @SerializedName("total")
     @Expose
-    private Integer total;
+    private int total;
 
     @SerializedName("count")
     @Expose
-    private Integer count;
+    private int count;
 
     @SerializedName("results")
     @Expose
     private List<Character> characters = new ArrayList<>();
 
-    public Integer getOffset() {
+    public int getOffset() {
         return offset;
     }
 
-    public Integer getLimit() {
+    public int getLimit() {
         return limit;
     }
 
-    public Integer getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count;
     }
 
@@ -51,19 +51,19 @@ public class Data {
         return characters;
     }
 
-    public void setOffset(Integer offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
-    public void setLimit(Integer limit) {
+    public void setLimit(int limit) {
         this.limit = limit;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(int count) {
         this.count = count;
     }
 
