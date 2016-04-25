@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.ruigoncalo.marvin.R;
 import com.ruigoncalo.marvin.ui.ImageLoaderManager;
-import com.ruigoncalo.marvin.ui.OnCharacterItemClickListener;
 import com.ruigoncalo.marvin.ui.ViewHolderRenderer;
 
 import butterknife.Bind;
@@ -38,23 +37,18 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder
     @Override
     public void onClick(View v) {
         if (listener != null) {
-            listener.onClick(getAdapterPosition());
+            listener.onCharacterItemClick(getAdapterPosition());
         }
     }
 
     @Override
     public void render(@NonNull CharacterViewModel item, int position) {
         textView.setText(item.getTitle());
-        ImageLoaderManager.getInstance().load(context, item.getImageUrl(), imageView);
-    }
-
-    @Override
-    public void prepareBeforeReuse() {
-
+        ImageLoaderManager.load(context, item.getImageUrl(), imageView);
     }
 
     @Override
     public void prepareNext(@NonNull CharacterViewModel item, int position) {
-
+        ImageLoaderManager.fetch(context, item.getImageUrl());
     }
 }

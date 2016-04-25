@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.ruigoncalo.marvin.R;
 import com.ruigoncalo.marvin.ui.BaseAdapter;
-import com.ruigoncalo.marvin.ui.OnCharacterItemClickListener;
 
 /**
  * Created by ruigoncalo on 20/04/16.

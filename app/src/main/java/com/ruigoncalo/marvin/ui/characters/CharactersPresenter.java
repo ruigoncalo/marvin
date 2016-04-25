@@ -1,5 +1,6 @@
 package com.ruigoncalo.marvin.ui.characters;
 
+import com.ruigoncalo.marvin.model.raw.Thumbnail;
 import com.ruigoncalo.marvin.repository.CharactersStore;
 import com.ruigoncalo.marvin.model.raw.Character;
 import com.ruigoncalo.marvin.utils.Callback;
@@ -28,6 +29,7 @@ public class CharactersPresenter implements Callback<List<Character>>{
     @Override
     public void onSuccess(List<Character> characters) {
         List<CharacterViewModel> viewModels = new ArrayList<>();
+
         for (Character character : characters) {
             CharacterViewModel viewModel = createViewModel(character);
             viewModels.add(viewModel);
@@ -46,7 +48,22 @@ public class CharactersPresenter implements Callback<List<Character>>{
         return new CharacterViewModel.Builder()
                 .id(character.getId())
                 .title(character.getName())
-                .imageUrl(character.getThumbnail().getPath())
+                .imageUrl(buildImageUrl(character.getThumbnail()))
                 .build();
+    }
+
+
+    /**
+     * Build image url path
+     * Font: http://developer.marvel.com/documentation/images
+     *
+     * @param thumbnail image url info
+     * @return full url to download image
+     */
+    private String buildImageUrl(Thumbnail thumbnail){
+        String path = thumbnail.getPath();
+        String extension = thumbnail.getExtension();
+
+        return path + "/" + "landscape_amazing" + "." + extension;
     }
 }

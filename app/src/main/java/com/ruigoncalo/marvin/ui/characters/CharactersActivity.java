@@ -1,5 +1,6 @@
 package com.ruigoncalo.marvin.ui.characters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.ruigoncalo.marvin.AppComponent;
 import com.ruigoncalo.marvin.R;
+import com.ruigoncalo.marvin.repository.CharactersStore;
 import com.ruigoncalo.marvin.ui.BaseActivity;
+import com.ruigoncalo.marvin.ui.profiles.ProfileActivity;
 
 import java.util.List;
 
@@ -20,7 +23,8 @@ import butterknife.ButterKnife;
 /**
  * Created by ruigoncalo on 20/04/16.
  */
-public class CharactersActivity extends BaseActivity implements CharactersView {
+public class CharactersActivity extends BaseActivity implements CharactersView,
+        OnCharacterItemClickListener {
 
     @Inject CharactersPresenter presenter;
 
@@ -52,11 +56,13 @@ public class CharactersActivity extends BaseActivity implements CharactersView {
     @Override
     protected void onStart() {
         super.onStart();
+        adapter.registerItemClickListener(this);
         presenter.getItems();
     }
 
     @Override
     protected void onStop() {
+        adapter.unregisterItemClickListener();
         super.onStop();
     }
 
@@ -68,6 +74,15 @@ public class CharactersActivity extends BaseActivity implements CharactersView {
     @Override
     public void isLoading(boolean loading) {
 
+    }
+
+    @Override
+    public void onCharacterItemClick(int position) {
+        CharacterViewModel item = adapter.getItem(position);
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(CharactersStore.CHARACTER_ID, item.getId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void setupBlankState() {
@@ -88,8 +103,6 @@ public class CharactersActivity extends BaseActivity implements CharactersView {
     private void setupSwipeRefreshLayout() {
 
     }
-
-
 
 
 }
