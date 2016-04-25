@@ -1,4 +1,4 @@
-package com.ruigoncalo.marvin.ui;
+package com.ruigoncalo.marvin.ui.characters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ruigoncalo.marvin.R;
+import com.ruigoncalo.marvin.ui.ImageLoaderManager;
+import com.ruigoncalo.marvin.ui.OnCharacterItemClickListener;
+import com.ruigoncalo.marvin.ui.ViewHolderRenderer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

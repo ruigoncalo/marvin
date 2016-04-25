@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by ruigoncalo on 21/04/16.
  */
-public class Result {
+public class Character {
 
     @SerializedName("id")
     @Expose
@@ -53,7 +53,7 @@ public class Result {
 
     @SerializedName("urls")
     @Expose
-    private List<Url> urls = new ArrayList<Url>();
+    private List<Url> urls = new ArrayList<>();
 
     public Integer getId() {
         return id;

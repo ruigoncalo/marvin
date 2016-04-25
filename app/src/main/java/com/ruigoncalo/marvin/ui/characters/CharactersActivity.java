@@ -1,4 +1,4 @@
-package com.ruigoncalo.marvin.ui;
+package com.ruigoncalo.marvin.ui.characters;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

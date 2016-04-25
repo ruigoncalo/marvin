@@ -1,4 +1,4 @@
-package com.ruigoncalo.marvin.ui;
+package com.ruigoncalo.marvin.ui.characters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ruigoncalo.marvin.R;
+import com.ruigoncalo.marvin.ui.BaseAdapter;
+import com.ruigoncalo.marvin.ui.OnCharacterItemClickListener;
 
 /**
  * Created by ruigoncalo on 20/04/16.
