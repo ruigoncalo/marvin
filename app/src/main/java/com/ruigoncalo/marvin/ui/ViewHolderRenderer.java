@@ -7,6 +7,5 @@ import android.support.annotation.NonNull;
  */
 public interface ViewHolderRenderer<T> {
     void render(@NonNull T item, int position);
-    void prepareBeforeReuse();
     void prepareNext(@NonNull T item, int position);
 }

@@ -6,29 +6,23 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 /**
- * ImageLoaderManager that wrapps an image loader lib
+ * ImageLoaderManager that wraps up an image loader lib
+ *
  * Currently using picasso
  *
  * Created by ruigoncalo on 20/04/16.
  */
-public class ImageLoaderManager implements ImageLoader {
-
-    private static ImageLoaderManager instance;
+public class ImageLoaderManager {
 
     private ImageLoaderManager(){
 
     }
 
-    public static ImageLoaderManager getInstance(){
-        if(instance == null){
-            instance = new ImageLoaderManager();
-        }
-
-        return instance;
+    public static void load(Context context, String url, ImageView target) {
+        Picasso.with(context).load(url).into(target);
     }
 
-    @Override
-    public void load(Context context, String url, ImageView target) {
-        Picasso.with(context).load(url).into(target);
+    public static void fetch(Context context, String url){
+        Picasso.with(context).load(url).fetch();
     }
 }

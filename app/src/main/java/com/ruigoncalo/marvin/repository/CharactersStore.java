@@ -16,6 +16,8 @@ import retrofit2.Response;
  */
 public class CharactersStore {
 
+    public static final String CHARACTER_ID = "character-id";
+
     private ApiManager apiManager;
 
     private List<Character> list;
