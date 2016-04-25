@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ruigoncalo on 21/04/16.
+ * Created by ruigoncalo on 25/04/16.
  */
-public class Comics {
+public class Collection {
 
     @SerializedName("available")
     @Expose
-    private Integer available;
+    private int available;
 
     @SerializedName("collectionURI")
     @Expose
@@ -21,13 +21,13 @@ public class Comics {
 
     @SerializedName("items")
     @Expose
-    private List<Object> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     @SerializedName("returned")
     @Expose
-    private Integer returned;
+    private int returned;
 
-    public Integer getAvailable() {
+    public int getAvailable() {
         return available;
     }
 
@@ -35,15 +35,15 @@ public class Comics {
         return collectionURI;
     }
 
-    public List<Object> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public Integer getReturned() {
+    public int getReturned() {
         return returned;
     }
 
-    public void setAvailable(Integer available) {
+    public void setAvailable(int available) {
         this.available = available;
     }
 
@@ -51,11 +51,11 @@ public class Comics {
         this.collectionURI = collectionURI;
     }
 
-    public void setItems(List<Object> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
-    public void setReturned(Integer returned) {
+    public void setReturned(int returned) {
         this.returned = returned;
     }
 }
