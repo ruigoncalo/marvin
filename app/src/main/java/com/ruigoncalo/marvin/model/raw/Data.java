@@ -29,7 +29,7 @@ public class Data {
 
     @SerializedName("results")
     @Expose
-    private List<Result> results = new ArrayList<Result>();
+    private List<Character> characters = new ArrayList<>();
 
     public Integer getOffset() {
         return offset;
@@ -47,8 +47,8 @@ public class Data {
         return count;
     }
 
-    public List<Result> getResults() {
-        return results;
+    public List<Character> getCharacters() {
+        return characters;
     }
 
     public void setOffset(Integer offset) {
@@ -67,7 +67,7 @@ public class Data {
         this.count = count;
     }
 
-    public void setResults(List<Result> results) {
-        this.results = results;
+    public void setCharacters(List<Character> characters) {
+        this.characters = characters;
     }
 }

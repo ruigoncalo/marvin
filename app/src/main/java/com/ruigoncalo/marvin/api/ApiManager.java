@@ -1,5 +1,9 @@
 package com.ruigoncalo.marvin.api;
 
+import android.content.Context;
+
+import com.ruigoncalo.marvin.R;
+import com.ruigoncalo.marvin.model.raw.Characters;
 import com.ruigoncalo.marvin.utils.Utils;
 
 import java.io.IOException;
@@ -10,6 +14,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,8 +30,10 @@ public class ApiManager {
     public static final String QUERY_PARAM_HASH = "hash";
 
     private MarvelApiService marvelApiService;
+    private Context context;
 
-    public ApiManager() {
+    public ApiManager(Context context) {
+        this.context = context;
         Retrofit retrofit = build(Endpoints.BASE_URL);
         marvelApiService = retrofit.create(MarvelApiService.class);
     }
@@ -78,8 +86,8 @@ public class ApiManager {
 
     private String[] generateAuthParams() {
         String ts = generateTs();
-        String apiKey = "";
-        String prvtKey = "";
+        String apiKey = context.getString(R.string.api_public_key);
+        String prvtKey = context.getString(R.string.api_private_key);
         String hash = generateHash(ts + prvtKey + apiKey);
 
         return new String[]{ts, apiKey, hash};
@@ -91,5 +99,10 @@ public class ApiManager {
 
     private String generateHash(String raw) {
         return Utils.md5(raw);
+    }
+
+    public void getCharacters(Callback<Characters> callback){
+        Call<Characters> call = marvelApiService.getCharacters();
+        call.enqueue(callback);
     }
 }

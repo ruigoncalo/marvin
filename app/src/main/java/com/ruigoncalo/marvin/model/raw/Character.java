@@ -13,7 +13,7 @@ public class Character {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
 
     @SerializedName("name")
     @Expose
@@ -55,7 +55,7 @@ public class Character {
     @Expose
     private List<Url> urls = new ArrayList<>();
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -99,7 +99,7 @@ public class Character {
         return urls;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
