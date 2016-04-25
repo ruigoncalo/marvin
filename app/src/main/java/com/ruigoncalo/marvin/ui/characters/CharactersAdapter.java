@@ -32,7 +32,7 @@ public class CharactersAdapter extends BaseAdapter<CharacterViewModel, Character
     public CharacterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater
                 .from(viewGroup.getContext())
-                .inflate(R.layout.item_adapter_character, viewGroup, true);
+                .inflate(R.layout.item_adapter_character, viewGroup, false);
         return new CharacterViewHolder(itemView, listener);
     }
 

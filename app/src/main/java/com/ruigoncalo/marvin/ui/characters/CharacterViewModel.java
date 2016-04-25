@@ -5,7 +5,7 @@ package com.ruigoncalo.marvin.ui.characters;
  */
 public class CharacterViewModel {
 
-    private final String id;
+    private final int id;
     private final String title;
     private final String imageUrl;
 
@@ -19,7 +19,7 @@ public class CharacterViewModel {
         this.imageUrl = builder.imageUrl;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -32,11 +32,11 @@ public class CharacterViewModel {
     }
 
     public static class Builder {
-        private String id = "";
+        private int id;
         private String title = "";
         private String imageUrl = "";
 
-        public Builder id(String id){
+        public Builder id(int id){
             this.id = id;
             return this;
         }
