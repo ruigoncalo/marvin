@@ -9,7 +9,6 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:contentDescription="@string/description.item.character"
-        android:background="@android:color/holo_red_dark"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
 

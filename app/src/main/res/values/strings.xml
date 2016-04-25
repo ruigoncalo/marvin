@@ -3,4 +3,10 @@
     <string name="action_settings">Settings</string>
 
     <string name="description.item.character">Character image</string>
+    <string name="text.description">Description</string>
+    <string name="text.comics">Comics</string>
+    <string name="text.series">Series</string>
+    <string name="text.stories">Stories</string>
+    <string name="text.events">Events</string>
+    <string name="text.related_links">Related links</string>
 </resources>
