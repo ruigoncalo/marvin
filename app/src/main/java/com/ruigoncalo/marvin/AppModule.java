@@ -1,6 +1,7 @@
 package com.ruigoncalo.marvin;
 
 import android.app.Application;
+import android.content.Context;
 
 import javax.inject.Singleton;
 
@@ -24,5 +25,10 @@ public class AppModule {
     @Singleton
     public Application provideApplication(){
         return app;
+    }
+
+    @Provides
+    public Context provideApplicationContext(){
+        return app.getApplicationContext();
     }
 }
