@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">marvin</string>
     <string name="action_settings">Settings</string>
+    <string name="search">Search</string>
 
     <string name="description.item.character">Character image</string>
     <string name="text.description">Description</string>
