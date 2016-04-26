@@ -1,4 +1,4 @@
-package com.ruigoncalo.marvin.ui.profiles;
+package com.ruigoncalo.marvin.model.viewmodel;
 
 /**
  * Created by ruigoncalo on 25/04/16.
