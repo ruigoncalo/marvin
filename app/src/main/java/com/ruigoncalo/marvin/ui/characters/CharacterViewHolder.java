@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ruigoncalo.marvin.R;
+import com.ruigoncalo.marvin.model.viewmodel.CharacterViewModel;
 import com.ruigoncalo.marvin.ui.ImageLoaderManager;
 import com.ruigoncalo.marvin.ui.ViewHolderRenderer;
 

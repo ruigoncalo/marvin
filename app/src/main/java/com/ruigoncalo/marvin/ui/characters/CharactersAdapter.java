@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ruigoncalo.marvin.R;
+import com.ruigoncalo.marvin.model.viewmodel.CharacterViewModel;
 import com.ruigoncalo.marvin.ui.BaseAdapter;
 
 /**
