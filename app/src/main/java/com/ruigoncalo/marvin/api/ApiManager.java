@@ -1,12 +1,14 @@
 package com.ruigoncalo.marvin.api;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.ruigoncalo.marvin.R;
 import com.ruigoncalo.marvin.model.raw.Characters;
 import com.ruigoncalo.marvin.utils.Utils;
 
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -101,8 +103,13 @@ public class ApiManager {
         return Utils.md5(raw);
     }
 
-    public void getCharacters(Callback<Characters> callback){
-        Call<Characters> call = marvelApiService.getCharacters();
+    public void getCharacters(@NonNull Map<String, String> map, Callback<Characters> callback){
+        Call<Characters> call = marvelApiService.getCharacters(map);
+        call.enqueue(callback);
+    }
+
+    public void getCharacterProfile(@NonNull String id, Callback<Characters> callback){
+        Call<Characters> call = marvelApiService.getCharacterProfile(id);
         call.enqueue(callback);
     }
 }
