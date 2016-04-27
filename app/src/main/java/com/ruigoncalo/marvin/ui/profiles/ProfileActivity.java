@@ -87,6 +87,11 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         updateToolbarTitle(profile.getName());
         ImageLoaderManager.load(this, profile.getImageUrl(), imageHeader);
         descriptionText.setText(profile.getDescription());
+
+        comicsAdapter.setItemList(profile.getComics());
+        seriesAdapter.setItemList(profile.getSeries());
+        storiesAdapter.setItemList(profile.getStories());
+        eventsAdapter.setItemList(profile.getEvents());
     }
 
     private void setupToolbar(){
