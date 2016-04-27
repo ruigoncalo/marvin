@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_margin="16dp"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/text_label_description"
         android:text="@string/text.description"
+        android:layout_margin="12dp"
         android:textSize="14sp"
         android:textColor="@android:color/holo_red_dark"
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
     <TextView
         android:id="@+id/text_description_content"
         android:textSize="14sp"
+        android:layout_margin="12dp"
         android:textColor="@android:color/white"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
@@ -25,6 +26,7 @@
     <TextView
         android:id="@+id/text_label_comics"
         android:text="@string/text.comics"
+        android:layout_margin="12dp"
         android:textSize="14sp"
         android:textColor="@android:color/holo_red_dark"
         android:layout_width="match_parent"
@@ -41,6 +43,7 @@
         android:id="@+id/text_label_series"
         android:text="@string/text.series"
         android:textSize="14sp"
+        android:layout_margin="12dp"
         android:textColor="@android:color/holo_red_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -57,6 +60,7 @@
         android:id="@+id/text_label_stories"
         android:text="@string/text.stories"
         android:textSize="14sp"
+        android:layout_margin="12dp"
         android:textColor="@android:color/holo_red_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -72,8 +76,9 @@
 
     <TextView
         android:id="@+id/text_label_events"
-        android:text="@string/text.stories"
+        android:text="@string/text.events"
         android:textSize="14sp"
+        android:layout_margin="12dp"
         android:textColor="@android:color/holo_red_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
