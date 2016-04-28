@@ -1,5 +1,6 @@
 package com.ruigoncalo.marvin.ui.profiles;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,9 @@ import com.ruigoncalo.marvin.repository.CharactersStore;
 import com.ruigoncalo.marvin.ui.BaseActivity;
 import com.ruigoncalo.marvin.ui.BaseAdapter;
 import com.ruigoncalo.marvin.ui.ImageLoaderManager;
+import com.ruigoncalo.marvin.ui.collections.CollectionsActivity;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -83,6 +87,15 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     }
 
     @Override
+    protected void onDestroy() {
+        comicsAdapter.unregisterItemClickListener();
+        seriesAdapter.unregisterItemClickListener();
+        storiesAdapter.unregisterItemClickListener();
+        eventsAdapter.unregisterItemClickListener();
+        super.onDestroy();
+    }
+
+    @Override
     public void showCharacterProfile(ProfileViewModel profile) {
         updateToolbarTitle(profile.getName());
         ImageLoaderManager.load(this, profile.getImageUrl(), imageHeader);
@@ -116,6 +129,34 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         seriesAdapter = new CollectionAdapter(this);
         storiesAdapter = new CollectionAdapter(this);
         eventsAdapter = new CollectionAdapter(this);
+
+        comicsAdapter.registerItemClickListener(new OnCollectionItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                onItemClick(comicsAdapter, position);
+            }
+        });
+
+        seriesAdapter.registerItemClickListener(new OnCollectionItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                onItemClick(seriesAdapter, position);
+            }
+        });
+
+        storiesAdapter.registerItemClickListener(new OnCollectionItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                onItemClick(storiesAdapter, position);
+            }
+        });
+
+        eventsAdapter.registerItemClickListener(new OnCollectionItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                onItemClick(eventsAdapter, position);
+            }
+        });
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, BaseAdapter adapter){
@@ -128,6 +169,29 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
 
     private void resolveIntent(){
         id = getIntent().getIntExtra(CharactersStore.CHARACTER_ID, -1);
+    }
+
+    private void onItemClick(CollectionAdapter adapter, int position){
+        ArrayList<CharSequence> titles = new ArrayList<>();
+        ArrayList<CharSequence> images = new ArrayList<>();
+
+        for(CollectionViewModel item : adapter.getItemList()){
+            titles.add(item.getTitle());
+            images.add(item.getImageUrl());
+        }
+
+        startCollectionsActivity(titles, images, position);
+    }
+
+    private void startCollectionsActivity(ArrayList<CharSequence> titles,
+                                          ArrayList<CharSequence> images, int position){
+
+        Intent intent = new Intent(this, CollectionsActivity.class);
+        intent.putCharSequenceArrayListExtra(CollectionsActivity.EXTRA_LIST_TITLES, titles);
+        intent.putCharSequenceArrayListExtra(CollectionsActivity.EXTRA_LIST_IMAGES, images);
+        intent.putExtra(CollectionsActivity.EXTRA_POSITION, position);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
 }
