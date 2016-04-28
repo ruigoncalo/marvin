@@ -24,6 +24,9 @@
         <activity android:name=".ui.profiles.ProfileActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".ui.collections.CollectionsActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>
