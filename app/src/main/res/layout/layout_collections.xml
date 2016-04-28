@@ -5,13 +5,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/image_close"
+    <Button
+        android:id="@+id/button_close"
         android:layout_gravity="end"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:background="@drawable/ic_clear"
+        style="@style/Widget.AppCompat.ActionButton"
         android:layout_margin="12dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_width="34dp"
+        android:layout_height="34dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -23,7 +24,7 @@
         android:id="@+id/text_collection_name"
         android:textColor="@android:color/white"
         android:gravity="center"
-        android:textSize="28sp"
+        android:textSize="18sp"
         android:layout_margin="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -31,9 +32,9 @@
 
     <TextView
         android:id="@+id/text_page_number"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/darker_gray"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:layout_marginBottom="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

@@ -7,8 +7,8 @@
     <ImageView
         android:id="@+id/image_collection_page"
         android:adjustViewBounds="true"
-        android:layout_margin="12dp"
-        android:scaleType="centerCrop"
+        android:layout_margin="52dp"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
