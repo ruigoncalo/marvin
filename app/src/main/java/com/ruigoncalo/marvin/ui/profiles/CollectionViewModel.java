@@ -5,6 +5,9 @@ package com.ruigoncalo.marvin.ui.profiles;
  */
 public class CollectionViewModel {
 
+    public static final String TITLE = "title";
+    public static final String IMAGE_URL = "imageUrl";
+
     private final int id;
     private final String title;
     private final String imageUrl;

@@ -35,7 +35,9 @@ public class ItemFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        imageUrl = args.getString("image");
+        if(args != null) {
+            imageUrl = args.getString("image");
+        }
     }
 
     @Override
