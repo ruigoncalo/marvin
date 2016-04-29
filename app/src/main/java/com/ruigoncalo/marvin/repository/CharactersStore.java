@@ -4,13 +4,19 @@ import android.support.annotation.Nullable;
 
 import com.ruigoncalo.marvin.api.ApiManager;
 import com.ruigoncalo.marvin.api.Endpoints;
-import com.ruigoncalo.marvin.bus.CharacterEvent;
+import com.ruigoncalo.marvin.bus.CharacterComicsEvent;
+import com.ruigoncalo.marvin.bus.CharacterProfileEvent;
+import com.ruigoncalo.marvin.bus.CharacterEventsEvent;
+import com.ruigoncalo.marvin.bus.CharacterSeriesEvent;
+import com.ruigoncalo.marvin.bus.CharacterStoriesEvent;
 import com.ruigoncalo.marvin.bus.CharactersResultErrorEvent;
 import com.ruigoncalo.marvin.bus.CharactersResultEvent;
 import com.ruigoncalo.marvin.bus.SearchResultErrorEvent;
 import com.ruigoncalo.marvin.bus.SearchResultEvent;
 import com.ruigoncalo.marvin.model.raw.Character;
 import com.ruigoncalo.marvin.model.raw.Characters;
+import com.ruigoncalo.marvin.model.raw.CollectionItem;
+import com.ruigoncalo.marvin.utils.Errors;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,7 +38,7 @@ public class CharactersStore {
     private ApiManager apiManager;
 
     // save characters in memory
-    // this can be updated to a database storage, for instance
+    // this can be replaced by database storage
     // TODO: limit capacity
     private Map<Integer, Character> charactersRepo;
 
@@ -46,7 +52,7 @@ public class CharactersStore {
      *
      * @param query search query
      */
-    public void searchCharacters(String query){
+    public void searchCharacters(String query) {
         Map<String, String> params = new HashMap<>();
         params.put(Endpoints.PARAM_NAME_STARTS_WITH, query);
         params.put(Endpoints.PARAM_LIMIT, "10"); // limit to 10 results to reduce response size
@@ -57,18 +63,17 @@ public class CharactersStore {
                 if (response.body() != null &&
                         response.body().getData() != null &&
                         response.body().getData().getCharacters() != null) {
-
                     SearchResultEvent event =
                             new SearchResultEvent(response.body().getData().getCharacters());
                     EventBus.getDefault().post(event);
                 } else {
-                    EventBus.getDefault().post(new SearchResultErrorEvent("Invalid data"));
+                    EventBus.getDefault().post(new SearchResultErrorEvent(Errors.ERROR_INVALID_DATA));
                 }
             }
 
             @Override
             public void onFailure(Call<Characters> call, Throwable t) {
-                EventBus.getDefault().post(new SearchResultErrorEvent("Could not get data from server"));
+                EventBus.getDefault().post(new SearchResultErrorEvent(Errors.ERROR_SERVER));
             }
         });
     }
@@ -77,7 +82,7 @@ public class CharactersStore {
      * Request list of characters from ApiManager
      */
     public void getList(@Nullable Map<String, String> params) {
-        if(params == null){
+        if (params == null) {
             params = new HashMap<>();
         }
 
@@ -92,61 +97,133 @@ public class CharactersStore {
                     CharactersResultEvent event = new CharactersResultEvent(list);
                     EventBus.getDefault().post(event);
                 } else {
-                    EventBus.getDefault().post(new CharactersResultErrorEvent("Invalid data"));
+                    EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_INVALID_DATA));
                 }
             }
 
             @Override
             public void onFailure(Call<Characters> call, Throwable t) {
-                EventBus.getDefault().post(new CharactersResultErrorEvent("Could not get data from server"));
+                EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_SERVER));
             }
         });
     }
 
-    public void getCharacterProfile(int id){
-        if(charactersRepo.containsKey(id)){
-            EventBus.getDefault().post(new CharacterEvent(charactersRepo.get(id)));
+    public void getCharacterProfile(int id) {
+        if (charactersRepo.containsKey(id)) {
+            EventBus.getDefault().post(new CharacterProfileEvent(charactersRepo.get(id)));
         } else {
             // fetch from server
             apiManager.getCharacterProfile(String.valueOf(id), new Callback<Characters>() {
                 @Override
                 public void onResponse(Call<Characters> call, Response<Characters> response) {
-                    if(response.body() != null &&
+                    if (response.body() != null &&
                             response.body().getData() != null &&
-                            response.body().getData().getCharacters() != null){
+                            response.body().getData().getCharacters() != null) {
                         List<Character> list = response.body().getData().getCharacters();
-                        if(list.size() == 1) {
+                        if (list.size() == 1) {
                             Character character = list.get(0);
                             addToRepo(character);
-                            CharacterEvent event = new CharacterEvent(character);
+                            CharacterProfileEvent event = new CharacterProfileEvent(character);
                             EventBus.getDefault().post(event);
                         }
                     } else {
-                        // post error event
+                        EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_INVALID_DATA));
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Characters> call, Throwable t) {
-                    // post error event
+                    EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_SERVER));
                 }
             });
         }
     }
 
+    public void getCharacterComics(int id) {
+        apiManager.getCharacterComics(String.valueOf(id), new Callback<CollectionItem>() {
+            @Override
+            public void onResponse(Call<CollectionItem> call, Response<CollectionItem> response) {
+                if (response.body() != null && response.body().getData() != null) {
+                    EventBus.getDefault().post(new CharacterComicsEvent(response.body().getData()));
+                } else {
+                    EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_INVALID_DATA));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CollectionItem> call, Throwable t) {
+                EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_SERVER));
+            }
+        });
+    }
+
+    public void getCharacterSeries(int id) {
+        apiManager.getCharacterSeries(String.valueOf(id), new Callback<CollectionItem>() {
+            @Override
+            public void onResponse(Call<CollectionItem> call, Response<CollectionItem> response) {
+                if (response.body() != null && response.body().getData() != null) {
+                    EventBus.getDefault().post(new CharacterSeriesEvent(response.body().getData()));
+                } else {
+                    EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_INVALID_DATA));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CollectionItem> call, Throwable t) {
+                EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_SERVER));
+            }
+        });
+    }
+
+    public void getCharacterStories(int id) {
+        apiManager.getCharacterStories(String.valueOf(id), new Callback<CollectionItem>() {
+            @Override
+            public void onResponse(Call<CollectionItem> call, Response<CollectionItem> response) {
+                if (response.body() != null && response.body().getData() != null) {
+                    EventBus.getDefault().post(new CharacterStoriesEvent(response.body().getData()));
+                } else {
+                    EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_INVALID_DATA));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CollectionItem> call, Throwable t) {
+                EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_SERVER));
+            }
+        });
+    }
+
+    public void getCharacterEvents(int id) {
+        apiManager.getCharacterEvents(String.valueOf(id), new Callback<CollectionItem>() {
+            @Override
+            public void onResponse(Call<CollectionItem> call, Response<CollectionItem> response) {
+                if (response.body() != null && response.body().getData() != null) {
+                    EventBus.getDefault().post(new CharacterEventsEvent(response.body().getData()));
+                } else {
+                    EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_INVALID_DATA));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CollectionItem> call, Throwable t) {
+                EventBus.getDefault().post(new CharactersResultErrorEvent(Errors.ERROR_SERVER));
+            }
+        });
+    }
+
     // repo modifiers
 
-    private void saveListToRepo(List<Character> list){
+    private void saveListToRepo(List<Character> list) {
         for (Character character : list) {
             addToRepo(character);
         }
     }
 
-    private void addToRepo(Character character){
+    private void addToRepo(Character character) {
         charactersRepo.put(character.getId(), character);
     }
 
-    private void removeFromRepo(int id){
+    private void removeFromRepo(int id) {
         charactersRepo.remove(id);
     }
 }
