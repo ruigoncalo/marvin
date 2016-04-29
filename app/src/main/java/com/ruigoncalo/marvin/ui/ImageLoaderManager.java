@@ -15,6 +15,15 @@ import com.squareup.picasso.Picasso;
  */
 public class ImageLoaderManager {
 
+    public static final int IMAGE_STANDARD = 0;
+    public static final int IMAGE_LANDSCAPE = 1;
+    public static final int IMAGE_PORTRAIT = 2;
+
+    private static final String IMAGE_FORMAT_STANDARD = "standard_fantastic";
+    private static final String IMAGE_FORMAT_LANDSCAPE = "landscape_amazing";
+    private static final String IMAGE_FORMAT_PORTRAIT = "portrait_fantastic";
+
+
     private ImageLoaderManager(){
 
     }
@@ -34,11 +43,30 @@ public class ImageLoaderManager {
      * @param thumbnail image url info
      * @return full url to download image
      */
-    public static String buildImageUrl(Thumbnail thumbnail, boolean landscape){
+    public static String buildImageUrl(Thumbnail thumbnail, int imageFormat){
         String path = thumbnail.getPath();
         String extension = thumbnail.getExtension();
-        String imageSize = landscape ? "landscape_amazing" : "standard_large";
+        String imageSize = getImageSize(imageFormat);
 
         return path + "/" + imageSize + "." + extension;
+    }
+
+
+    private static String getImageSize(int formart){
+        String result;
+        switch (formart){
+            case IMAGE_LANDSCAPE:
+                result = IMAGE_FORMAT_LANDSCAPE;
+                break;
+
+            case IMAGE_PORTRAIT:
+                result = IMAGE_FORMAT_PORTRAIT;
+                break;
+
+            default: // standard
+                result = IMAGE_FORMAT_STANDARD;
+        }
+
+        return result;
     }
 }
