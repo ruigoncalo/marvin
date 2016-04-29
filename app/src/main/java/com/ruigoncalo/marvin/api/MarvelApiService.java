@@ -1,6 +1,7 @@
 package com.ruigoncalo.marvin.api;
 
 import com.ruigoncalo.marvin.model.raw.Characters;
+import com.ruigoncalo.marvin.model.raw.CollectionItem;
 
 import java.util.Map;
 
@@ -20,4 +21,15 @@ public interface MarvelApiService {
     @GET(Endpoints.CHARACTERS_ID)
     Call<Characters> getCharacterProfile(@Path("id") String id);
 
+    @GET(Endpoints.CHARACTERS_ID_COMICS)
+    Call<CollectionItem> getCharacterComics(@Path("id") String id);
+
+    @GET(Endpoints.CHARACTERS_ID_SERIES)
+    Call<CollectionItem> getCharacterSeries(@Path("id") String id);
+
+    @GET(Endpoints.CHARACTERS_ID_STORIES)
+    Call<CollectionItem> getCharacterStories(@Path("id") String id);
+
+    @GET(Endpoints.CHARACTERS_ID_EVENTS)
+    Call<CollectionItem> getCharacterEvents(@Path("id") String id);
 }

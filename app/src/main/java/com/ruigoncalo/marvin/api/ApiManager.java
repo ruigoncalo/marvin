@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.ruigoncalo.marvin.R;
 import com.ruigoncalo.marvin.model.raw.Characters;
+import com.ruigoncalo.marvin.model.raw.CollectionItem;
 import com.ruigoncalo.marvin.utils.Utils;
 
 import java.io.IOException;
@@ -110,6 +111,26 @@ public class ApiManager {
 
     public void getCharacterProfile(@NonNull String id, Callback<Characters> callback){
         Call<Characters> call = marvelApiService.getCharacterProfile(id);
+        call.enqueue(callback);
+    }
+
+    public void getCharacterComics(@NonNull String id, Callback<CollectionItem> callback){
+        Call<CollectionItem> call = marvelApiService.getCharacterComics(id);
+        call.enqueue(callback);
+    }
+
+    public void getCharacterSeries(@NonNull String id, Callback<CollectionItem> callback){
+        Call<CollectionItem> call = marvelApiService.getCharacterSeries(id);
+        call.enqueue(callback);
+    }
+
+    public void getCharacterStories(@NonNull String id, Callback<CollectionItem> callback){
+        Call<CollectionItem> call = marvelApiService.getCharacterStories(id);
+        call.enqueue(callback);
+    }
+
+    public void getCharacterEvents(@NonNull String id, Callback<CollectionItem> callback){
+        Call<CollectionItem> call = marvelApiService.getCharacterEvents(id);
         call.enqueue(callback);
     }
 }
