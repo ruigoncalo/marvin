@@ -1,94 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_label_description"
-        android:text="@string/text.description"
-        android:layout_margin="12dp"
-        android:textSize="14sp"
-        android:textColor="@android:color/holo_red_dark"
+    <LinearLayout
+        android:id="@+id/view_group_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/text_description_content"
-        android:textSize="14sp"
+        android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_label_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text.description"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/text_description_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_group_comics"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_label_comics"
-        android:text="@string/text.comics"
-        android:layout_margin="12dp"
-        android:textSize="14sp"
-        android:textColor="@android:color/holo_red_dark"
+        <TextView
+            android:id="@+id/text_label_comics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/text.comics"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_comics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/view_group_series"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_comics"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/text_label_series"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/text.series"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"/>
 
-    <TextView
-        android:id="@+id/text_label_series"
-        android:text="@string/text.series"
-        android:textSize="14sp"
-        android:layout_margin="12dp"
-        android:textColor="@android:color/holo_red_dark"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_series"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/view_group_stories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_label_stories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/text.stories"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"/>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_series"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_stories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"/>
 
-    <TextView
-        android:id="@+id/text_label_stories"
-        android:text="@string/text.stories"
-        android:textSize="14sp"
-        android:layout_margin="12dp"
-        android:textColor="@android:color/holo_red_dark"
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/view_group_events"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_label_events"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/text.events"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"/>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_stories"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"/>
 
-
-    <TextView
-        android:id="@+id/text_label_events"
-        android:text="@string/text.events"
-        android:textSize="14sp"
-        android:layout_margin="12dp"
-        android:textColor="@android:color/holo_red_dark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_events"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </LinearLayout>
