@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.ruigoncalo.marvin.AppComponent;
@@ -19,6 +22,7 @@ import com.ruigoncalo.marvin.model.viewmodel.CharacterViewModel;
 import com.ruigoncalo.marvin.repository.CharactersStore;
 import com.ruigoncalo.marvin.ui.BaseActivity;
 import com.ruigoncalo.marvin.ui.profiles.ProfileActivity;
+import com.ruigoncalo.marvin.utils.InfiniteScrollListener;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +45,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
 
     @Inject CharactersPresenter presenter;
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view_characters) RecyclerView charactersRecyclerView;
     @Bind(R.id.swipe_refresh_layout_characters) SwipeRefreshLayout swipeRefreshLayout;
 
@@ -66,6 +71,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         setContentView(R.layout.layout_screen_characters);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         ButterKnife.bind(this);
+        setupToolbar();
         setupSwipeRefreshLayout();
         setupAdapter();
         setupRecyclerView();
@@ -84,12 +90,23 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     private void setupSearchView(MenuItem menuItem) {
         searchView = (SearchView) menuItem.getActionView();
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceCharatersBySearchLayout();
-            }
-        });
+        MenuItemCompat.setActionView(menuItem, searchView);
+        searchView.setQueryHint(getString(R.string.app_name));
+        MenuItemCompat.setOnActionExpandListener(menuItem,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        replaceCharatersBySearchLayout();
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        restoreOriginalLayout();
+                        return true;
+                    }
+                });
+
 
         subscription = RxSearchView.queryTextChanges(searchView)
                 .debounce(175, TimeUnit.MILLISECONDS)
@@ -160,7 +177,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     public void onCharacterItemClick(int position) {
         CharacterViewModel item = isSearchMode ?
                 searchesAdapter.getItem(position) :
-                charactersAdapter.getItem(position) ;
+                charactersAdapter.getItem(position);
 
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(CharactersStore.CHARACTER_ID, item.getId());
@@ -177,6 +194,15 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         }
     }
 
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            ViewCompat.setElevation(toolbar, 16);
+            actionBar.setTitle(getString(R.string.marvel_characters));
+        }
+    }
+
     private void setupBlankState() {
     }
 
@@ -185,6 +211,13 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         charactersRecyclerView.setLayoutManager(layoutManager);
         charactersRecyclerView.setHasFixedSize(true);
+        charactersRecyclerView.addOnScrollListener(
+                new InfiniteScrollListener(layoutManager, presenter) {
+                    @Override
+                    public void onLoadMore() {
+
+                    }
+                });
         charactersRecyclerView.setAdapter(charactersAdapter);
     }
 
@@ -206,6 +239,13 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     private void replaceCharatersBySearchLayout() {
         isSearchMode = true;
         charactersRecyclerView.setAdapter(searchesAdapter);
+    }
+
+    private void restoreOriginalLayout() {
+        searchesAdapter.getItemList().clear();
+
+        isSearchMode = false;
+        charactersRecyclerView.setAdapter(charactersAdapter);
     }
 
     private Observer<CharSequence> getSearchObserver() {

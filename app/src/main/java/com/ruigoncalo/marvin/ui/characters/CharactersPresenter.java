@@ -8,6 +8,7 @@ import com.ruigoncalo.marvin.model.viewmodel.CharacterViewModel;
 import com.ruigoncalo.marvin.repository.CharactersStore;
 import com.ruigoncalo.marvin.model.raw.Character;
 import com.ruigoncalo.marvin.ui.ImageLoaderManager;
+import com.ruigoncalo.marvin.utils.DataLoadingSubject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by ruigoncalo on 24/04/16.
  */
-public class CharactersPresenter {
+public class CharactersPresenter implements DataLoadingSubject {
 
     private CharactersView view;
     private CharactersStore store;
@@ -46,12 +47,17 @@ public class CharactersPresenter {
         store.searchCharacters(query);
     }
 
+    @Override
+    public boolean isDataLoading() {
+        return false;
+    }
+
     @Subscribe
     public void onCharactersResultEvent(CharactersResultEvent event) {
         List<CharacterViewModel> viewModels = new ArrayList<>();
 
         for (Character character : event.getList()) {
-            CharacterViewModel viewModel = createViewModel(character, true); // landscape
+            CharacterViewModel viewModel = createViewModel(character, ImageLoaderManager.IMAGE_LANDSCAPE);
             viewModels.add(viewModel);
         }
 
@@ -70,7 +76,7 @@ public class CharactersPresenter {
         List<CharacterViewModel> viewModels = new ArrayList<>();
 
         for (Character character : event.getList()) {
-            CharacterViewModel viewModel = createViewModel(character, false); // standard
+            CharacterViewModel viewModel = createViewModel(character, ImageLoaderManager.IMAGE_STANDARD);
             viewModels.add(viewModel);
         }
 
@@ -88,14 +94,14 @@ public class CharactersPresenter {
      * Convert Character raw object to correspondent view model
      *
      * @param character raw object
-     * @param imageLandscape use landscape or standard image resolution
+     * @param imageFormat image ratio
      * @return character view model to be drawn on ui
      */
-    private CharacterViewModel createViewModel(Character character, boolean imageLandscape){
+    private CharacterViewModel createViewModel(Character character, int imageFormat){
         return new CharacterViewModel.Builder()
                 .id(character.getId())
                 .title(character.getName())
-                .imageUrl(ImageLoaderManager.buildImageUrl(character.getThumbnail(), imageLandscape))
+                .imageUrl(ImageLoaderManager.buildImageUrl(character.getThumbnail(), imageFormat))
                 .build();
     }
 }
