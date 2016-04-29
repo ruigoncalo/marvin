@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,11 +21,13 @@ import com.ruigoncalo.marvin.ui.ImageLoaderManager;
 import com.ruigoncalo.marvin.ui.collections.CollectionsActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by ruigoncalo on 25/04/16.
@@ -33,11 +37,16 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     @Inject ProfilePresenter presenter;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.view_group_description) View groupDescription;
     @Bind(R.id.image_header) ImageView imageHeader;
     @Bind(R.id.text_description_content) TextView descriptionText;
+    @Bind(R.id.view_group_comics) View groupComics;
     @Bind(R.id.list_comics) RecyclerView recyclerViewComics;
+    @Bind(R.id.view_group_series) View groupSeries;
     @Bind(R.id.list_series) RecyclerView recyclerViewSeries;
+    @Bind(R.id.view_group_stories) View groupStories;
     @Bind(R.id.list_stories) RecyclerView recyclerViewStories;
+    @Bind(R.id.view_group_events) View groupEvents;
     @Bind(R.id.list_events) RecyclerView recyclerViewEvents;
 
     private CollectionAdapter comicsAdapter;
@@ -75,8 +84,14 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         super.onStart();
         presenter.onStart();
 
-        if(id != -1){
+        if (id != -1) {
             presenter.getCharacterProfile(id);
+            presenter.getCharacterComics(id);
+            presenter.getCharacterSeries(id);
+            presenter.getCharacterStories(id);
+            presenter.getCharacterEvents(id);
+        } else {
+            // show error
         }
     }
 
@@ -96,21 +111,126 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void isLoadingProfile(boolean loading) {
+        String log = "Loading profile " + (loading ? "START" : "END");
+        Timber.d(log);
+    }
+
+    @Override
     public void showCharacterProfile(ProfileViewModel profile) {
         updateToolbarTitle(profile.getName());
         ImageLoaderManager.load(this, profile.getImageUrl(), imageHeader);
-        descriptionText.setText(profile.getDescription());
 
-        comicsAdapter.setItemList(profile.getComics());
-        seriesAdapter.setItemList(profile.getSeries());
-        storiesAdapter.setItemList(profile.getStories());
-        eventsAdapter.setItemList(profile.getEvents());
+        if(profile.getDescription() != null && !profile.getDescription().isEmpty()) {
+            descriptionText.setText(profile.getDescription());
+        } else {
+            groupDescription.setVisibility(View.GONE);
+        }
     }
 
-    private void setupToolbar(){
+    @Override
+    public void showCharacterProfileError(String message) {
+        String log = "Show profile error: " + message;
+        Timber.d(log);
+    }
+
+    @Override
+    public void isLoadingCharacterComics(boolean loading) {
+        String log = "Loading comics " + (loading ? "START" : "END");
+        Timber.d(log);
+    }
+
+    @Override
+    public void showCharacterComics(List<CollectionViewModel> items) {
+        if(!items.isEmpty()) {
+            comicsAdapter.setItemList(items);
+        } else {
+            groupComics.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showCharacterComicsError(String message) {
+        String log = "Show comics error: " + message;
+        Timber.d(log);
+    }
+
+    @Override
+    public void isLoadingCharacterSeries(boolean loading) {
+        String log = "Loading series " + (loading ? "START" : "END");
+        Timber.d(log);
+    }
+
+    @Override
+    public void showCharacterSeries(List<CollectionViewModel> items) {
+        if(!items.isEmpty()) {
+            seriesAdapter.setItemList(items);
+        } else {
+            groupSeries.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showCharacterSeriesError(String message) {
+        String log = "Show series error: " + message;
+        Timber.d(log);
+    }
+
+    @Override
+    public void isLoadingCharacterStories(boolean loading) {
+        String log = "Loading stories " + (loading ? "START" : "END");
+        Timber.d(log);
+    }
+
+    @Override
+    public void showCharacterStories(List<CollectionViewModel> items) {
+        if (!items.isEmpty()) {
+            storiesAdapter.setItemList(items);
+        } else {
+            groupStories.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showCharacterStoriesError(String message) {
+        String log = "Show stories error: " + message;
+        Timber.d(log);
+    }
+
+    @Override
+    public void isLoadingCharacterEvents(boolean loading) {
+        String log = "Loading events " + (loading ? "START" : "END");
+        Timber.d(log);
+    }
+
+    @Override
+    public void showCharacterEvents(List<CollectionViewModel> items) {
+        if (!items.isEmpty()) {
+            eventsAdapter.setItemList(items);
+        } else {
+            groupEvents.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showCharacterEventsError(String message) {
+        String log = "Show events error: " + message;
+        Timber.d(log);
+    }
+
+    private void setupToolbar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setTitle("");
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -124,7 +244,7 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         }
     }
 
-    private void setupAdapters(){
+    private void setupAdapters() {
         comicsAdapter = new CollectionAdapter(this);
         seriesAdapter = new CollectionAdapter(this);
         storiesAdapter = new CollectionAdapter(this);
@@ -159,7 +279,7 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         });
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView, BaseAdapter adapter){
+    private void setupRecyclerView(RecyclerView recyclerView, BaseAdapter adapter) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -167,15 +287,15 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         recyclerView.setAdapter(adapter);
     }
 
-    private void resolveIntent(){
+    private void resolveIntent() {
         id = getIntent().getIntExtra(CharactersStore.CHARACTER_ID, -1);
     }
 
-    private void onItemClick(CollectionAdapter adapter, int position){
+    private void onItemClick(CollectionAdapter adapter, int position) {
         ArrayList<CharSequence> titles = new ArrayList<>();
         ArrayList<CharSequence> images = new ArrayList<>();
 
-        for(CollectionViewModel item : adapter.getItemList()){
+        for (CollectionViewModel item : adapter.getItemList()) {
             titles.add(item.getTitle());
             images.add(item.getImageUrl());
         }
@@ -184,7 +304,7 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     }
 
     private void startCollectionsActivity(ArrayList<CharSequence> titles,
-                                          ArrayList<CharSequence> images, int position){
+                                          ArrayList<CharSequence> images, int position) {
 
         Intent intent = new Intent(this, CollectionsActivity.class);
         intent.putCharSequenceArrayListExtra(CollectionsActivity.EXTRA_LIST_TITLES, titles);
