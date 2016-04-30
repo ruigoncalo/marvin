@@ -4,131 +4,195 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/view_group_description"
+    <TextView
+        android:id="@+id/text_label_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:orientation="vertical">
+        android:text="@string/text.description"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/text_label_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text.description"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/text_description_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/view_group_comics"
+    <TextView
+        android:id="@+id/text_description_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/text_label_comics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:text="@string/text.comics"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"/>
+
+    <FrameLayout
+        android:id="@+id/container_comics"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/loading_comics"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            layout="@layout/layout_loading"/>
 
         <TextView
-            android:id="@+id/text_label_comics"
+            android:id="@+id/text_comics_info"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="@string/text.comics"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="14sp"/>
+            android:layout_height="match_parent"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_comics"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"/>
+            android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
-
-    <LinearLayout
-        android:id="@+id/view_group_series"
+    <TextView
+        android:id="@+id/text_label_series"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:text="@string/text.series"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/text_label_series"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="@string/text.series"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="14sp"/>
+    <FrameLayout
+        android:id="@+id/container_series"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/loading_series"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        layout="@layout/layout_loading"/>
+
+    <TextView
+        android:id="@+id/text_series_info"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_series"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_series"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
-
-    <LinearLayout
-        android:id="@+id/view_group_stories"
+    <TextView
+        android:id="@+id/text_label_stories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:text="@string/text.stories"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/text_label_stories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="@string/text.stories"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="14sp"/>
+    <FrameLayout
+        android:id="@+id/container_stories"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/loading_stories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        layout="@layout/layout_loading"/>
+
+    <TextView
+        android:id="@+id/text_stories_info"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_stories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_stories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
-
-    <LinearLayout
-        android:id="@+id/view_group_events"
+    <TextView
+        android:id="@+id/text_label_events"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:text="@string/text.events"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/text_label_events"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="@string/text.events"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="14sp"/>
+    <FrameLayout
+        android:id="@+id/container_events"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/loading_events"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        layout="@layout/layout_loading"/>
+
+    <TextView
+        android:id="@+id/text_events_info"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_events"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

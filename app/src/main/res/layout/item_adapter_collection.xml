@@ -12,14 +12,16 @@
         android:id="@+id/image_item_collection"
         android:adjustViewBounds="true"
         android:layout_width="100dp"
-        android:layout_height="150dp"/>
+        android:layout_height="@dimen/image_item_collection_height"/>
 
     <TextView
         android:id="@+id/text_item_collection"
         android:padding="8dp"
         android:gravity="center"
         android:textColor="@android:color/white"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textSize="15sp"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/text_item_collection_height"/>
 </LinearLayout>
