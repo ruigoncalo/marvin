@@ -14,12 +14,16 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.ruigoncalo.marvin.AppComponent;
 import com.ruigoncalo.marvin.R;
 import com.ruigoncalo.marvin.model.viewmodel.CharacterViewModel;
 import com.ruigoncalo.marvin.repository.CharactersStore;
+import com.ruigoncalo.marvin.ui.AdapterListSizeListener;
 import com.ruigoncalo.marvin.ui.BaseActivity;
 import com.ruigoncalo.marvin.ui.profiles.ProfileActivity;
 import com.ruigoncalo.marvin.utils.InfiniteScrollListener;
@@ -41,16 +45,16 @@ import timber.log.Timber;
  * Created by ruigoncalo on 20/04/16.
  */
 public class CharactersActivity extends BaseActivity implements CharactersView,
-        OnCharacterItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+        OnCharacterItemClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterListSizeListener {
 
     @Inject CharactersPresenter presenter;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view_characters) RecyclerView charactersRecyclerView;
     @Bind(R.id.swipe_refresh_layout_characters) SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.text_info) TextView textInfo;
 
     private Subscription subscription;
-    private SearchView searchView;
     private CharactersAdapter charactersAdapter;
     private SearchesAdapter searchesAdapter;
 
@@ -89,10 +93,10 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     }
 
     private void setupSearchView(MenuItem menuItem) {
-        searchView = (SearchView) menuItem.getActionView();
+        final SearchView searchView = (SearchView) menuItem.getActionView();
 
         MenuItemCompat.setActionView(menuItem, searchView);
-        searchView.setQueryHint(getString(R.string.app_name));
+        searchView.setQueryHint(getString(R.string.action_search));
         MenuItemCompat.setOnActionExpandListener(menuItem,
                 new MenuItemCompat.OnActionExpandListener() {
                     @Override
@@ -108,6 +112,18 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
                     }
                 });
 
+        // Get the search close button image view
+        ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
+
+        if(closeButton != null){
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchView.setQuery("", false);
+                    searchesAdapter.clear();
+                }
+            });
+        }
 
         subscription = RxSearchView.queryTextChanges(searchView)
                 .debounce(175, TimeUnit.MILLISECONDS)
@@ -128,7 +144,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         searchesAdapter.registerItemClickListener(this);
         presenter.onStart();
 
-        if(!hasItems) {
+        if (!hasItems) {
             presenter.getItems();
         }
     }
@@ -196,7 +212,12 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
 
     @Override
     public void showSearchResults(List<CharacterViewModel> list) {
+        textInfo.setVisibility(View.GONE);
         searchesAdapter.setItemList(list);
+        if(list.isEmpty()){
+            textInfo.setVisibility(View.VISIBLE);
+            textInfo.setText(getString(R.string.text_no_results));
+        }
     }
 
     @Override
@@ -227,6 +248,11 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         }
     }
 
+    @Override
+    public void isAdapterListEmpty() {
+        Timber.d("Empty list");
+    }
+
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -237,6 +263,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     }
 
     private void setupBlankState() {
+        textInfo.setVisibility(View.GONE);
     }
 
     private void setupRecyclerView() {
@@ -248,7 +275,9 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
                 new InfiniteScrollListener(layoutManager, presenter) {
                     @Override
                     public void onLoadMore() {
-                        presenter.getMoreItems();
+                        if (!isSearchMode) {
+                            presenter.getMoreItems();
+                        }
                     }
                 });
         charactersRecyclerView.setAdapter(charactersAdapter);

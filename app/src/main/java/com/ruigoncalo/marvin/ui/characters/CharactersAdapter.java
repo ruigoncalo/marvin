@@ -12,6 +12,10 @@ import com.ruigoncalo.marvin.ui.BaseAdapter;
 import com.ruigoncalo.marvin.ui.LoadingViewHolder;
 
 /**
+ * Extends from baseadapter for loading character items
+ *
+ * Shows a loader item when fetching new items to append at the bottom of the list
+ *
  * Created by ruigoncalo on 20/04/16.
  */
 public class CharactersAdapter extends BaseAdapter<CharacterViewModel, RecyclerView.ViewHolder> {
