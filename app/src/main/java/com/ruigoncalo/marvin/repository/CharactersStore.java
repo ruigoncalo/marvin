@@ -9,6 +9,8 @@ import com.ruigoncalo.marvin.bus.CharacterProfileEvent;
 import com.ruigoncalo.marvin.bus.CharacterEventsEvent;
 import com.ruigoncalo.marvin.bus.CharacterSeriesEvent;
 import com.ruigoncalo.marvin.bus.CharacterStoriesEvent;
+import com.ruigoncalo.marvin.bus.CharactersMoreResultsErrorEvent;
+import com.ruigoncalo.marvin.bus.CharactersMoreResultsEvent;
 import com.ruigoncalo.marvin.bus.CharactersResultErrorEvent;
 import com.ruigoncalo.marvin.bus.CharactersResultEvent;
 import com.ruigoncalo.marvin.bus.SearchResultErrorEvent;
@@ -34,6 +36,8 @@ import retrofit2.Response;
 public class CharactersStore {
 
     public static final String CHARACTER_ID = "character-id";
+
+    private static final int ITEMS_PER_PAGE = 20;
 
     private ApiManager apiManager;
 
@@ -81,7 +85,7 @@ public class CharactersStore {
     /**
      * Request list of characters from ApiManager
      */
-    public void getList(@Nullable Map<String, String> params) {
+    public void getCharacters(@Nullable Map<String, String> params) {
         if (params == null) {
             params = new HashMap<>();
         }
@@ -108,6 +112,37 @@ public class CharactersStore {
         });
     }
 
+    public void getMoreCharacters(int page){
+        Map<String, String> params = new HashMap<>();
+        int offsetValue = page * ITEMS_PER_PAGE;
+        params.put(Endpoints.PARAM_OFFSET, String.valueOf(offsetValue));
+
+        apiManager.getCharacters(params, new Callback<Characters>() {
+            @Override
+            public void onResponse(Call<Characters> call, Response<Characters> response) {
+                if (response.body() != null &&
+                        response.body().getData() != null &&
+                        response.body().getData().getCharacters() != null) {
+                    List<Character> list = response.body().getData().getCharacters();
+                    saveListToRepo(list);
+                    CharactersMoreResultsEvent event = new CharactersMoreResultsEvent(list);
+                    EventBus.getDefault().post(event);
+                } else {
+                    EventBus.getDefault().post(new CharactersMoreResultsErrorEvent(Errors.ERROR_INVALID_DATA));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Characters> call, Throwable t) {
+                EventBus.getDefault().post(new CharactersMoreResultsErrorEvent(Errors.ERROR_SERVER));
+            }
+        });
+    }
+
+    /**
+     * Request a single character from ApiManager
+     * @param id character id
+     */
     public void getCharacterProfile(int id) {
         if (charactersRepo.containsKey(id)) {
             EventBus.getDefault().post(new CharacterProfileEvent(charactersRepo.get(id)));

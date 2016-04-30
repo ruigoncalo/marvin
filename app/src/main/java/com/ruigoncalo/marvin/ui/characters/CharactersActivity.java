@@ -55,6 +55,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     private SearchesAdapter searchesAdapter;
 
     private boolean isSearchMode;
+    private boolean hasItems;
 
     @Override
     protected void setupComponent(AppComponent appComponent) {
@@ -126,7 +127,10 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         charactersAdapter.registerItemClickListener(this);
         searchesAdapter.registerItemClickListener(this);
         presenter.onStart();
-        presenter.getItems();
+
+        if(!hasItems) {
+            presenter.getItems();
+        }
     }
 
     @Override
@@ -145,7 +149,13 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
     }
 
     @Override
+    public void isLoadingCharacters(boolean loading) {
+        showLoading(loading);
+    }
+
+    @Override
     public void showCharacters(List<CharacterViewModel> list) {
+        hasItems = true;
         charactersAdapter.setItemList(list);
     }
 
@@ -154,6 +164,34 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         String errorLog = "Characters error: " + message;
         Timber.d(errorLog);
         // show ui error
+    }
+
+    @Override
+    public void isLoadingMoreCharacters(boolean loading) {
+        if (loading) {
+            // show footer loading while waiting for more ads
+            charactersAdapter.showFooterLoading();
+        } else {
+            // hide footer loading
+            charactersAdapter.hideFooterLoading();
+        }
+    }
+
+    @Override
+    public void showMoreCharacters(List<CharacterViewModel> list) {
+        charactersAdapter.appendItems(list);
+    }
+
+    @Override
+    public void showMoreCharactersError(String message) {
+        String errorLog = "More characters error: " + message;
+        Timber.d(errorLog);
+        // show ui error
+    }
+
+    @Override
+    public void isLoadingResults(boolean loading) {
+        showLoading(loading);
     }
 
     @Override
@@ -166,11 +204,6 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
         String errorLog = "Search error: " + message;
         Timber.d(errorLog);
         // show ui error
-    }
-
-    @Override
-    public void isLoading(boolean loading) {
-        showLoading(loading);
     }
 
     @Override
@@ -215,7 +248,7 @@ public class CharactersActivity extends BaseActivity implements CharactersView,
                 new InfiniteScrollListener(layoutManager, presenter) {
                     @Override
                     public void onLoadMore() {
-
+                        presenter.getMoreItems();
                     }
                 });
         charactersRecyclerView.setAdapter(charactersAdapter);

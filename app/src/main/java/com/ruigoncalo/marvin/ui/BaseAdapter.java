@@ -43,6 +43,11 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         }
     }
 
+    public void appendItems(List<T> itemList){
+        this.itemList.addAll(itemList);
+        notifyDataSetChanged();
+    }
+
     public List<T> getItemList(){
         return itemList;
     }
@@ -53,8 +58,9 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
 
     @Override
     public int getItemCount() {
-        if(itemList != null)
+        if(itemList != null) {
             return itemList.size();
+        }
 
         return 0;
     }

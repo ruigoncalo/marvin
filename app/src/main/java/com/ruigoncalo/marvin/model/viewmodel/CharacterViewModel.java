@@ -8,6 +8,7 @@ public class CharacterViewModel {
     private final int id;
     private final String title;
     private final String imageUrl;
+    private final boolean isLoader;
 
     public CharacterViewModel() {
         this(new Builder());
@@ -17,6 +18,7 @@ public class CharacterViewModel {
         this.id = builder.id;
         this.title = builder.title;
         this.imageUrl = builder.imageUrl;
+        this.isLoader = builder.isLoader;
     }
 
     public int getId() {
@@ -31,10 +33,15 @@ public class CharacterViewModel {
         return imageUrl;
     }
 
+    public boolean isLoader() {
+        return isLoader;
+    }
+
     public static class Builder {
         private int id;
         private String title = "";
         private String imageUrl = "";
+        private boolean isLoader;
 
         public Builder id(int id){
             this.id = id;
@@ -51,6 +58,10 @@ public class CharacterViewModel {
             return this;
         }
 
+        public Builder isLoader(boolean isLoader){
+            this.isLoader = isLoader;
+            return this;
+        }
 
         public CharacterViewModel build() {
             return new CharacterViewModel(this);
