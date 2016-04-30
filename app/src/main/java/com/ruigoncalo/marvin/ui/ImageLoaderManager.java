@@ -1,6 +1,8 @@
 package com.ruigoncalo.marvin.ui;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.ruigoncalo.marvin.model.raw.Thumbnail;
@@ -19,10 +21,13 @@ public class ImageLoaderManager {
     public static final int IMAGE_LANDSCAPE = 1;
     public static final int IMAGE_PORTRAIT = 2;
 
-    private static final String IMAGE_FORMAT_STANDARD = "standard_fantastic";
-    private static final String IMAGE_FORMAT_LANDSCAPE = "landscape_amazing";
-    private static final String IMAGE_FORMAT_PORTRAIT = "portrait_fantastic";
+    public static final String IMAGE_FORMAT_STANDARD = "standard_fantastic";
+    public static final String IMAGE_FORMAT_LANDSCAPE = "landscape_amazing";
+    public static final String IMAGE_FORMAT_PORTRAIT = "portrait_fantastic";
+    public static final String IMAGE_FORMAT_PORTRAIT_BEST = "portrait_incredible";
 
+    private static final String PLACEHOLDER_URL = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+    private static final String PLACEHOLDER_EXT = "jpg";
 
     private ImageLoaderManager(){
 
@@ -43,9 +48,9 @@ public class ImageLoaderManager {
      * @param thumbnail image url info
      * @return full url to download image
      */
-    public static String buildImageUrl(Thumbnail thumbnail, int imageFormat){
-        String path = thumbnail.getPath();
-        String extension = thumbnail.getExtension();
+    public static String buildImageUrl(@Nullable Thumbnail thumbnail, int imageFormat){
+        String path = thumbnail == null ? PLACEHOLDER_URL : thumbnail.getPath();
+        String extension =  thumbnail == null? PLACEHOLDER_EXT : thumbnail.getExtension();
         String imageSize = getImageSize(imageFormat);
 
         return path + "/" + imageSize + "." + extension;
@@ -68,5 +73,12 @@ public class ImageLoaderManager {
         }
 
         return result;
+    }
+
+
+    public static String updateUrlImageRatio(String url, String newRatio){
+        Uri uri = Uri.parse(url);
+        String imageRatio = uri.getLastPathSegment();
+        return url.replace(imageRatio, newRatio + "." + PLACEHOLDER_EXT);
     }
 }
