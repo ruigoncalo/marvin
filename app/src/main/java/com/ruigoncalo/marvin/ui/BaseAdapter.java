@@ -52,6 +52,15 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         return itemList;
     }
 
+    public void clear(){
+        itemList.clear();
+        notifyDataSetChanged();
+
+        if(adapterListSizeListener != null){
+            adapterListSizeListener.isAdapterListEmpty();
+        }
+    }
+
     public abstract VH onCreateViewHolder(ViewGroup viewGroup, int viewType);
 
     public abstract void onBindViewHolder(VH holder, int position);
