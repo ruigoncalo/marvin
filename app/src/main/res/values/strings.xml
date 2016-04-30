@@ -13,6 +13,9 @@
     <string name="text.events">Events</string>
     <string name="text.related_links">Related links</string>
     <string name="text.no_results">No results</string>
+    <string name="text.detail">Detail</string>
+    <string name="text.wiki">Wiki</string>
+    <string name="text.comiclink">Comiclink</string>
 
     <string name="error.data_not_found">Data not found</string>
     <string name="error.default">Something went wrong</string>
