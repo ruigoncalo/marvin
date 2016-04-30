@@ -12,4 +12,8 @@
     <string name="text.stories">Stories</string>
     <string name="text.events">Events</string>
     <string name="text.related_links">Related links</string>
+    <string name="text.no_results">No results</string>
+
+    <string name="error.data_not_found">Data not found</string>
+    <string name="error.default">Something went wrong</string>
 </resources>
