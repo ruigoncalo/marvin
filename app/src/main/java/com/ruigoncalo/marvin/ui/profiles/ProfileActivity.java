@@ -2,12 +2,14 @@ package com.ruigoncalo.marvin.ui.profiles;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,16 +39,28 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     @Inject ProfilePresenter presenter;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.view_group_description) View groupDescription;
+    @Bind(R.id.container) View container;
     @Bind(R.id.image_header) ImageView imageHeader;
     @Bind(R.id.text_description_content) TextView descriptionText;
-    @Bind(R.id.view_group_comics) View groupComics;
+
+    @Bind(R.id.container_comics) ViewGroup comicsContainer;
+    @Bind(R.id.loading_comics) View loadingComics;
+    @Bind(R.id.text_comics_info) TextView textComics;
     @Bind(R.id.list_comics) RecyclerView recyclerViewComics;
-    @Bind(R.id.view_group_series) View groupSeries;
+
+    @Bind(R.id.container_series) ViewGroup seriesContainer;
+    @Bind(R.id.loading_series) View loadingSeries;
+    @Bind(R.id.text_series_info) TextView textSeries;
     @Bind(R.id.list_series) RecyclerView recyclerViewSeries;
-    @Bind(R.id.view_group_stories) View groupStories;
+
+    @Bind(R.id.container_stories) ViewGroup storiesContainer;
+    @Bind(R.id.loading_stories) View loadingStories;
+    @Bind(R.id.text_stories_info) TextView textStories;
     @Bind(R.id.list_stories) RecyclerView recyclerViewStories;
-    @Bind(R.id.view_group_events) View groupEvents;
+
+    @Bind(R.id.container_events) ViewGroup eventsContainer;
+    @Bind(R.id.loading_events) View loadingEvents;
+    @Bind(R.id.text_events_info) TextView textEvents;
     @Bind(R.id.list_events) RecyclerView recyclerViewEvents;
 
     private CollectionAdapter comicsAdapter;
@@ -55,6 +69,7 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     private CollectionAdapter eventsAdapter;
 
     private int id;
+    private boolean hasProfile, hasComics, hasSeries, hasStories, hasEvents;
 
     @Override
     protected void setupComponent(AppComponent appComponent) {
@@ -69,6 +84,11 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_screen_profile);
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         ButterKnife.bind(this);
         setupToolbar();
         setupAdapters();
@@ -85,13 +105,28 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         presenter.onStart();
 
         if (id != -1) {
-            presenter.getCharacterProfile(id);
-            presenter.getCharacterComics(id);
-            presenter.getCharacterSeries(id);
-            presenter.getCharacterStories(id);
-            presenter.getCharacterEvents(id);
+            if(!hasProfile) {
+                presenter.getCharacterProfile(id);
+            }
+
+            if(!hasComics) {
+                presenter.getCharacterComics(id);
+            }
+
+            if(!hasSeries) {
+                presenter.getCharacterSeries(id);
+            }
+
+            if(!hasStories) {
+                presenter.getCharacterStories(id);
+            }
+
+            if(!hasEvents) {
+                presenter.getCharacterEvents(id);
+            }
         } else {
-            // show error
+            Snackbar.make(container, getString(R.string.error_default), Snackbar.LENGTH_LONG)
+                    .show();
         }
     }
 
@@ -127,13 +162,14 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
 
     @Override
     public void showCharacterProfile(ProfileViewModel profile) {
+        hasProfile = true;
         updateToolbarTitle(profile.getName());
         ImageLoaderManager.load(this, profile.getImageUrl(), imageHeader);
 
         if(profile.getDescription() != null && !profile.getDescription().isEmpty()) {
             descriptionText.setText(profile.getDescription());
         } else {
-            groupDescription.setVisibility(View.GONE);
+            descriptionText.setText(getString(R.string.error_data_not_found));
         }
     }
 
@@ -145,17 +181,13 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
 
     @Override
     public void isLoadingCharacterComics(boolean loading) {
-        String log = "Loading comics " + (loading ? "START" : "END");
-        Timber.d(log);
+        showLoadingCollection(loading, loadingComics);
     }
 
     @Override
     public void showCharacterComics(List<CollectionViewModel> items) {
-        if(!items.isEmpty()) {
-            comicsAdapter.setItemList(items);
-        } else {
-            groupComics.setVisibility(View.GONE);
-        }
+        hasComics = true;
+        showCollectionItems(items, recyclerViewComics, comicsAdapter, textComics);
     }
 
     @Override
@@ -166,17 +198,13 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
 
     @Override
     public void isLoadingCharacterSeries(boolean loading) {
-        String log = "Loading series " + (loading ? "START" : "END");
-        Timber.d(log);
+        showLoadingCollection(loading, loadingSeries);
     }
 
     @Override
     public void showCharacterSeries(List<CollectionViewModel> items) {
-        if(!items.isEmpty()) {
-            seriesAdapter.setItemList(items);
-        } else {
-            groupSeries.setVisibility(View.GONE);
-        }
+        hasSeries = true;
+        showCollectionItems(items, recyclerViewSeries, seriesAdapter, textSeries);
     }
 
     @Override
@@ -187,17 +215,13 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
 
     @Override
     public void isLoadingCharacterStories(boolean loading) {
-        String log = "Loading stories " + (loading ? "START" : "END");
-        Timber.d(log);
+        showLoadingCollection(loading, loadingStories);
     }
 
     @Override
     public void showCharacterStories(List<CollectionViewModel> items) {
-        if (!items.isEmpty()) {
-            storiesAdapter.setItemList(items);
-        } else {
-            groupStories.setVisibility(View.GONE);
-        }
+        hasStories = true;
+        showCollectionItems(items, recyclerViewStories, storiesAdapter, textStories);
     }
 
     @Override
@@ -208,17 +232,13 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
 
     @Override
     public void isLoadingCharacterEvents(boolean loading) {
-        String log = "Loading events " + (loading ? "START" : "END");
-        Timber.d(log);
+        showLoadingCollection(loading, loadingEvents);
     }
 
     @Override
     public void showCharacterEvents(List<CollectionViewModel> items) {
-        if (!items.isEmpty()) {
-            eventsAdapter.setItemList(items);
-        } else {
-            groupEvents.setVisibility(View.GONE);
-        }
+        hasEvents = true;
+        showCollectionItems(items, recyclerViewEvents, eventsAdapter, textEvents);
     }
 
     @Override
@@ -285,6 +305,9 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        // get nestedscrollview vertical scroll working well with horizontal recyclerview
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private void resolveIntent() {
@@ -312,6 +335,22 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         intent.putExtra(CollectionsActivity.EXTRA_POSITION, position);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void showLoadingCollection(boolean loading, View view){
+        view.setVisibility(loading ? View.VISIBLE : View.GONE);
+    }
+
+    private void showCollectionItems(List<CollectionViewModel> items, RecyclerView recyclerView,
+                                     CollectionAdapter adapter, TextView textInfo){
+        if(!items.isEmpty()) {
+            textInfo.setVisibility(View.GONE);
+            adapter.setItemList(items);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            textInfo.setText(getString(R.string.error_data_not_found));
+        }
+
     }
 
 }
