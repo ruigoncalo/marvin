@@ -1,5 +1,7 @@
 package com.ruigoncalo.marvin.ui.profiles;
 
+import android.support.annotation.Nullable;
+
 import com.ruigoncalo.marvin.bus.CharacterComicsErrorEvent;
 import com.ruigoncalo.marvin.bus.CharacterComicsEvent;
 import com.ruigoncalo.marvin.bus.CharacterEventsErrorEvent;
@@ -13,6 +15,7 @@ import com.ruigoncalo.marvin.bus.CharacterStoriesEvent;
 import com.ruigoncalo.marvin.model.raw.Character;
 import com.ruigoncalo.marvin.model.raw.CollectionItemResult;
 import com.ruigoncalo.marvin.model.raw.CollectionItemResults;
+import com.ruigoncalo.marvin.model.raw.Url;
 import com.ruigoncalo.marvin.model.viewmodel.ProfileViewModel;
 import com.ruigoncalo.marvin.repository.CharactersStore;
 import com.ruigoncalo.marvin.ui.ImageLoaderManager;
@@ -149,6 +152,10 @@ public class ProfilePresenter {
                 .name(character.getName())
                 .imageUrl(ImageLoaderManager.buildImageUrl(character.getThumbnail(),
                         imageFormat))
+                .description(character.getDescription())
+                .detail(getRelatedLink(Url.TYPE_DETAIL, character.getUrls()))
+                .wiki(getRelatedLink(Url.TYPE_WIKI, character.getUrls()))
+                .comicLink(getRelatedLink(Url.TYPE_COMICLINK, character.getUrls()))
                 .build();
     }
 
@@ -172,5 +179,17 @@ public class ProfilePresenter {
         }
 
         return list;
+    }
+
+    private String getRelatedLink(String type, @Nullable List<Url> urls){
+        if(urls != null) {
+            for (Url url : urls) {
+                if (type.equals(url.getType())) {
+                    return url.getUrl();
+                }
+            }
+        }
+
+        return null;
     }
 }

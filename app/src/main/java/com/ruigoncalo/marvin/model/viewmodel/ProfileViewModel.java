@@ -1,10 +1,5 @@
 package com.ruigoncalo.marvin.model.viewmodel;
 
-import com.ruigoncalo.marvin.ui.profiles.CollectionViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by ruigoncalo on 25/04/16.
  */
@@ -14,10 +9,9 @@ public class ProfileViewModel {
     private final String name;
     private final String imageUrl;
     private final String description;
-    private final List<CollectionViewModel> comics;
-    private final List<CollectionViewModel> series;
-    private final List<CollectionViewModel> stories;
-    private final List<CollectionViewModel> events;
+    private final String detail;
+    private final String wiki;
+    private final String comicLink;
 
     public ProfileViewModel() {
         this(new Builder());
@@ -28,10 +22,9 @@ public class ProfileViewModel {
         this.name = builder.name;
         this.imageUrl = builder.imageUrl;
         this.description = builder.description;
-        this.comics = builder.comics;
-        this.series = builder.series;
-        this.stories = builder.stories;
-        this.events = builder.events;
+        this.detail = builder.detail;
+        this.wiki = builder.wiki;
+        this.comicLink = builder.comicLink;
     }
 
     public int getId() {
@@ -50,20 +43,16 @@ public class ProfileViewModel {
         return description;
     }
 
-    public List<CollectionViewModel> getComics() {
-        return comics;
+    public String getDetail() {
+        return detail;
     }
 
-    public List<CollectionViewModel> getSeries() {
-        return series;
+    public String getWiki() {
+        return wiki;
     }
 
-    public List<CollectionViewModel> getStories() {
-        return stories;
-    }
-
-    public List<CollectionViewModel> getEvents() {
-        return events;
+    public String getComicLink() {
+        return comicLink;
     }
 
     public static class Builder {
@@ -71,10 +60,9 @@ public class ProfileViewModel {
         private String name = "";
         private String imageUrl = "";
         private String description = "";
-        private List<CollectionViewModel> comics = new ArrayList<>();
-        private List<CollectionViewModel> series = new ArrayList<>();
-        private List<CollectionViewModel> stories = new ArrayList<>();
-        private List<CollectionViewModel> events = new ArrayList<>();
+        private String detail = "";
+        private String wiki = "";
+        private String comicLink = "";
 
         public Builder id(int id){
             this.id = id;
@@ -96,23 +84,18 @@ public class ProfileViewModel {
             return this;
         }
 
-        public Builder comics(List<CollectionViewModel> comics){
-            this.comics = comics;
+        public Builder detail(String detail){
+            this.detail = detail;
             return this;
         }
 
-        public Builder series(List<CollectionViewModel> series){
-            this.series = series;
+        public Builder wiki(String wiki){
+            this.wiki = wiki;
             return this;
         }
 
-        public Builder stories(List<CollectionViewModel> stories){
-            this.stories = stories;
-            return this;
-        }
-
-        public Builder events(List<CollectionViewModel> events){
-            this.events = events;
+        public Builder comicLink(String comicLink){
+            this.comicLink = comicLink;
             return this;
         }
 

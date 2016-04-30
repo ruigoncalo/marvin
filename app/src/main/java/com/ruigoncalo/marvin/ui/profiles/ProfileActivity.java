@@ -1,6 +1,7 @@
 package com.ruigoncalo.marvin.ui.profiles;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,6 +64,10 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     @Bind(R.id.loading_events) View loadingEvents;
     @Bind(R.id.text_events_info) TextView textEvents;
     @Bind(R.id.list_events) RecyclerView recyclerViewEvents;
+
+    @Bind(R.id.button_detail) Button detailButton;
+    @Bind(R.id.button_wiki) Button wikiButton;
+    @Bind(R.id.button_comiclink) Button comiclinkButton;
 
     private CollectionAdapter comicsAdapter;
     private CollectionAdapter seriesAdapter;
@@ -161,7 +167,7 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
     }
 
     @Override
-    public void showCharacterProfile(ProfileViewModel profile) {
+    public void showCharacterProfile(final ProfileViewModel profile) {
         hasProfile = true;
         updateToolbarTitle(profile.getName());
         ImageLoaderManager.load(this, profile.getImageUrl(), imageHeader);
@@ -170,6 +176,39 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
             descriptionText.setText(profile.getDescription());
         } else {
             descriptionText.setText(getString(R.string.error_data_not_found));
+        }
+
+        if(profile.getDetail() != null){
+            detailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendActionView(profile.getDetail());
+                }
+            });
+        } else {
+            detailButton.setEnabled(false);
+        }
+
+        if(profile.getWiki() != null){
+            wikiButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendActionView(profile.getWiki());
+                }
+            });
+        } else {
+            wikiButton.setEnabled(false);
+        }
+
+        if(profile.getComicLink() != null){
+            comiclinkButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendActionView(profile.getComicLink());
+                }
+            });
+        } else {
+            comiclinkButton.setEnabled(false);
         }
     }
 
@@ -337,6 +376,12 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
         startActivity(intent);
     }
 
+    private void sendActionView(String url){
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
     private void showLoadingCollection(boolean loading, View view){
         view.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
@@ -350,7 +395,6 @@ public class ProfileActivity extends BaseActivity implements ProfileView {
             recyclerView.setVisibility(View.GONE);
             textInfo.setText(getString(R.string.error_data_not_found));
         }
-
     }
 
 }

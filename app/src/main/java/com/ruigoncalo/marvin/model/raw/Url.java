@@ -8,6 +8,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Url {
 
+    public static final String TYPE_DETAIL = "detail";
+    public static final String TYPE_WIKI = "wiki";
+    public static final String TYPE_COMICLINK = "comiclink";
+
     @SerializedName("type")
     @Expose
     private String type;
