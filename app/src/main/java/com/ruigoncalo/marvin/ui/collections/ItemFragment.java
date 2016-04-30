@@ -44,7 +44,11 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.layout_collection_page, container, false);
         ButterKnife.bind(this, view);
-        ImageLoaderManager.load(getContext(), imageUrl, image);
+
+        String bestPortraitQuality = ImageLoaderManager.updateUrlImageRatio(imageUrl,
+                ImageLoaderManager.IMAGE_FORMAT_PORTRAIT_BEST);
+
+        ImageLoaderManager.load(getContext(), bestPortraitQuality, image);
         return view;
     }
 
